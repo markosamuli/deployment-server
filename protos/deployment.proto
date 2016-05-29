@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option java_package = "bynd.deployment";
+
+import "google/protobuf/timestamp.proto";
+
+package deployment;
+
+// The deployer service definition.
+service Deployer {
+  // Sends a greeting
+  rpc Deploy (DeploymentRequest) returns (stream DeploymentEvent) {}
+  rpc ListDeploymentEvents (ListDeploymentEventsRequest) returns (stream DeploymentEvent) {}
+}
+
+message DeploymentArtefact {
+  string s3_bucket = 1;
+  string s3_key = 2;
+  enum BundleType {
+    ZIP = 0;
+  }
+  BundleType bundle_type = 3;
+}
+
+// The request message containing the project, environment and branch to deploy.
+message DeploymentRequest {
+  string project = 1;
+  string environment = 2;
+
+  DeploymentArtefact artefact = 3;
+
+  string description = 4;
+}
+
+
+// The request message containing the project, environment to list events for.
+message ListDeploymentEventsRequest {
+  string project = 1;
+  string environment = 2;
+}
+
+// Deployment event.
+message DeploymentEvent {
+  string project = 1;
+  string environment = 2;
+
+  enum Status {
+    CREATED = 0;
+    QUEUED = 1;
+    IN_PROGRESS = 2;
+    SUCCEEDED = 3;
+    FAILED = 4;
+    STOPPED = 5;
+  }
+  Status status = 3;
+
+  google.protobuf.Timestamp timestamp = 4;
+
+  string message = 5;
+  string lifecycle_event = 6;
+}
