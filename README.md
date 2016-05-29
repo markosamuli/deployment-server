@@ -7,6 +7,18 @@ playing with Google's [GRPC](http://www.grpc.io/) framework.
 
 Protocol Buffers [proto3](https://developers.google.com/protocol-buffers/docs/proto3) version of the language is used. It's available as a beta release at the time of writing this.
 
+## Configuration
+
+Make sure you have valid AWS IAM credentials set in environment variables or are using IAM instance role.
+
+These are required for [boto3](https://github.com/boto/boto3) to download artefacts from AWS S3.
+
+## Running the server
+
+```
+python deployment_server.py
+```
+
 ## Deployer service
 
 ### Deploy
